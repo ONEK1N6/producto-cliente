@@ -1,0 +1,49 @@
+<app-home></app-home>
+<div style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
+  <!-- Botón para Crear -->
+  <button pButton pRipple type="button" icon="pi pi-plus" class="p-button-rounded p-button-success"
+    (click)="showDialogCreate()" style="margin-bottom: 20px;"></button>
+
+  <!-- Tabla de Clientes -->
+  <p-table [value]="clientes" [tableStyle]="{ 'min-width': '50rem' }">
+    <ng-template pTemplate="header">
+      <tr>
+        <th>ID</th>
+        <th>Nombre</th>
+        <th>Acciones</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-cliente>
+      <tr>
+        <td>{{ cliente.id }}</td>
+        <td>{{ cliente.nombre }}</td>
+        <td>
+          <!-- Botón para Editar -->
+          <button pButton pRipple type="button" icon="pi pi-pencil" class="p-button-rounded"
+            (click)="showDialogEdit(cliente.id)"></button>
+
+          <!-- Botón para Eliminar (ahora usa confirmación) -->
+          <button pButton pRipple type="button" icon="pi pi-trash" class="p-button-rounded p-button-danger"
+            (click)="confirmDeleteCliente(cliente.id)"></button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+
+  <!-- Diálogo para Crear/Editar Cliente -->
+  <p-dialog header="{{titulo}}" [modal]="true" [(visible)]="visible" [style]="{ width: '25rem' }">
+    <div class="flex align-items-center gap-3 mb-3">
+      <label for="nombre" class="font-semibold w-6rem">Nombre:</label>
+      <input pInputText [(ngModel)]="cliente.nombre" name="nombre" id="nombre" class="flex-auto" autocomplete="off" />
+    </div>
+    <div class="flex justify-content-end gap-2">
+      <p-button label="Cancel" severity="secondary" (click)="visible = false" />
+      <!-- El botón ahora llama a confirmSaveCliente() -->
+      <p-button label="{{opc}}" (click)="confirmSaveCliente()" />
+    </div>
+  </p-dialog>
+
+  <!-- Notificaciones y diálogos de confirmación -->
+  <p-toast></p-toast>
+  <p-confirmDialog></p-confirmDialog>
+</div>
